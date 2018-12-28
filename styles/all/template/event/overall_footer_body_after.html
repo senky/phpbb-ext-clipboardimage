@@ -1,3 +1,5 @@
+{# we need to load our file AFTER plupload, thus using this event #}
+
 {% if S_PLUPLOAD %}
 	{% INCLUDEJS '@senky_clipboardimage/clipboardimage.js' %}
 {% endif %}
