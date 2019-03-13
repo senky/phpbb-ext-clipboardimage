@@ -1,0 +1,7 @@
+services:
+    senky.clipboardimage.listener:
+        class: senky\clipboardimage\event\listener
+        arguments:
+            - '@language'
+        tags:
+            - { name: event.listener }

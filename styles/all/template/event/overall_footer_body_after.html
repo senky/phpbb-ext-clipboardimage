@@ -1,5 +1,13 @@
 {# we need to load our file AFTER plupload, thus using this event #}
 
 {% if S_PLUPLOAD %}
+	<script>
+		var senky_clipboardimage_lang = {
+			copy: '{{ lang('CLIPBOARDIMAGE_COPY') | e('js') }}',
+			text: '{{ lang('CLIPBOARDIMAGE_TEXT') | e('js') }}',
+			image: '{{ lang('CLIPBOARDIMAGE_IMAGE') | e('js') }}',
+			both: '{{ lang('CLIPBOARDIMAGE_BOTH') | e('js') }}',
+		}
+	</script>
 	{% INCLUDEJS '@senky_clipboardimage/clipboardimage.js' %}
 {% endif %}
