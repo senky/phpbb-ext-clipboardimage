@@ -11,7 +11,9 @@
 		},
 		preventDefaultAndRemovePopup = function(e) {
 			e.preventDefault();
-			removePopup();
+			$('#paste-popup').slideUp(400, function() {
+				$(this).remove();
+			});
 		},
 		displayPopup = function() {
 			$('[name="' + text_name + '"]').after('<div id="paste-popup" style="display:none">' + senky_clipboardimage_lang.copy + '<br><br><a href="#" id="paste-text" class="button2">' + senky_clipboardimage_lang.text + '</a> <a href="#" id="paste-image" class="button2">' + senky_clipboardimage_lang.image + '</a> <a href="#" id="paste-both" class="button2">' + senky_clipboardimage_lang.both + '</a></div>');
@@ -31,16 +33,10 @@
 			});
 
 			$('#paste-popup').slideDown();
-		},
-		removePopup = function() {
-			$('#paste-popup').slideUp(400, function() {
-				$(this).remove();
-			});
 		};
 
-	// for unknown reason jQuery listener won't expose clipboardData
-	window.addEventListener('paste', function(e) {
-		var clipboardData = e.clipboardData || window.clipboardData;
+	$(window).on('paste', function(e) {
+		var clipboardData = e.originalEvent.clipboardData || window.clipboardData;
 		if (clipboardData === false || clipboardData.items == false) {
 			return;
 		}
