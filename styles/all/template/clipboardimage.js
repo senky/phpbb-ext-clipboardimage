@@ -9,12 +9,15 @@
 		},
 		preventDefaultAndRemovePopup = function(e) {
 			e.preventDefault();
-			$('#paste-popup').slideUp(400, function() {
+
+			var popup = $('.popup-fixed').length ? '.popup-fixed' : '#paste-popup';
+			$(popup).slideUp(400, function() {
 				$(this).remove();
 			});
 		},
 		displayPopup = function() {
-			$('[name="' + text_name + '"]').after('<div id="paste-popup" style="display:none">' + senky_clipboardimage_lang.copy + '<br><br><a href="#" id="paste-text" class="button2">' + senky_clipboardimage_lang.text + '</a> <a href="#" id="paste-image" class="button2">' + senky_clipboardimage_lang.image + '</a> <a href="#" id="paste-both" class="button2">' + senky_clipboardimage_lang.both + '</a></div>');
+			var $textarea = $('[name="' + text_name + '"]');
+			$textarea.after('<div id="paste-popup" style="display:none">' + senky_clipboardimage_lang.copy + '<br><br><a href="#" id="paste-text" class="button2">' + senky_clipboardimage_lang.text + '</a> <a href="#" id="paste-image" class="button2">' + senky_clipboardimage_lang.image + '</a> <a href="#" id="paste-both" class="button2">' + senky_clipboardimage_lang.both + '</a></div>');
 
 			$('#paste-text').on('click', function(e) {
 				preventDefaultAndRemovePopup(e);
@@ -29,6 +32,19 @@
 				insert_text(text);
 				uploadImages();
 			});
+
+			// in case popup would be hidden below viewport, make it fixed
+			var viewportTop = $(window).scrollTop(),
+				viewportBottom = viewportTop + $(window).height(),
+				$popup = $('#paste-popup'),
+				popupTop = $textarea.offset().top + $textarea.outerHeight();
+			if (popupTop > viewportBottom) {
+				$popup.addClass('panel bg2').css({
+					zIndex: 999,
+					position: 'fixed',
+					bottom: 0
+				});
+			}
 
 			$('#paste-popup').slideDown();
 		};
