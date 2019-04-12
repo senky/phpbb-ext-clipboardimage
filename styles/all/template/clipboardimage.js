@@ -4,9 +4,7 @@
 	var text,
 		images,
 		uploadImages = function() {
-			$.each(images, function(_, image) {
-				phpbb.plupload.uploader.addFile(image);
-			});
+			phpbb.plupload.uploader.addFile(images);
 			phpbb.plupload.uploader.start();
 		},
 		preventDefaultAndRemovePopup = function(e) {
