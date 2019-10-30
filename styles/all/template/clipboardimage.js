@@ -79,14 +79,23 @@
 	
 		// no image but some text here - let the browser do its job
 	});
-})(window, jQuery, phpbb, text_name);
 
-// place new image inline
-phpbb.plupload.uploader.bind('FileUploaded', function(_, file, response) {
-	try {
-		json = JSON.parse(response.response);
-		if (typeof json.title === 'undefined' && !json.error && file.status === plupload.DONE) {
-			attachInline(phpbb.plupload.getIndex(json.data[0].attach_id), json.data[0].real_filename);
+	// place new image inline
+	phpbb.plupload.uploader.bind('FileUploaded', function(_, file, response) {
+		// Make sure this image comes from the clipboard.
+		// Otherwise do not inline the attachment.
+		var clipboardImg = images.find(function(img) {
+			return img.name == file.name && img.size == file.origSize;
+		});
+		if (!clipboardImg) {
+			return;
 		}
-	} catch (e) {}
-});
+
+		try {
+			var json = JSON.parse(response.response);
+			if (typeof json.title === 'undefined' && !json.error && file.status === plupload.DONE) {
+				attachInline(phpbb.plupload.getIndex(json.data[0].attach_id), json.data[0].real_filename);
+			}
+		} catch (e) {console.log(e)}
+	});
+})(window, jQuery, phpbb, text_name);
